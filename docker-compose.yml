@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  web:
+    image: php:8.2-apache
+    container_name: web
+    volumes:
+      - ./stockage/web:/var/www/html
+    ports:
+      - 8185:80
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    volumes:
+      - ./stockage/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=tp12023
+      - POSTGRES_USER=tp1
+      - POSTGRES_DB=web
+      - PGDATA= ./stockage/postgres
+    ports:
+      - 5432:5432
+    networks:
+      - postgres
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=breton.nathan100@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=mdp1
+    ports:
+      - 8182:80
+    networks:
+      - postgres
+
+
+
+networks:
+  postgres:
+    driver: bridge
